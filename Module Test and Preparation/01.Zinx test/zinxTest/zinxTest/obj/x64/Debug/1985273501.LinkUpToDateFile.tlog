@@ -1,1 +1,0 @@
-g++ -o "/root/projects/zinxTest/bin/x64/Debug/zinxTest.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack /root/projects/zinxTest/obj/x64/Debug/main.o -lzinx
