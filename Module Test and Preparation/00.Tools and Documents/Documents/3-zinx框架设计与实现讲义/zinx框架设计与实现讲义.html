@@ -1,0 +1,820 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:zinx框架设计与实现讲义</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="1-">1 框架设计</h1>
+<p>设计zinx框架用于处理IO并发。</p>
+<p>从简单场景入手，考虑易变化的部分。</p>
+<h2 id="-">简单场景</h2>
+<p>键盘输入字符，控制台直接输出该字符</p>
+<p><img src="zinx框架设计与实现讲义.assets/简单场景.png" alt="简单场景"></p>
+<h2 id="-">功能多样化</h2>
+<p>若输入小写字母，则输出大写字母，若输入大写字母则原样输出</p>
+<p><img src="zinx框架设计与实现讲义.assets/功能多样化.png" alt="功能多样化"></p>
+<h2 id="-">数据多样化</h2>
+<p>输入和输出均要字母的ascii码</p>
+<p><img src="zinx框架设计与实现讲义.assets/数据多样化.png" alt="数据多样化"></p>
+<h2 id="-">通道多样化</h2>
+<p>UDP输入数据，输出到FIFO文件</p>
+<p><img src="zinx框架设计与实现讲义.assets/通道多样化.png" alt="通道多样化"></p>
+<h1 id="2-">2实现---》重构---》实现</h1>
+<ul>
+<li>面向对象的设计方法：将用例图中的每个实体转换成类</li>
+<li>为每个类设计成员（方法为主）</li>
+<li>先设计实体类，再逐步抽象抽象类</li>
+</ul>
+<h2 id="2-1-">2.1单一业务编写</h2>
+<p><strong>需求：</strong>读取标准输入，回显到标准输出</p>
+<p><strong>类设计：</strong>标准输入通道类，框架核心类</p>
+<p><img src="zinx框架设计与实现讲义.assets/1560493651658.png" alt="1560493651658"></p>
+<p><strong>功能流程：</strong></p>
+<ul>
+<li>kernel类提供run函数用于在接收到键盘输入后调用stdin的读取函数，然后输出内容（epoll）</li>
+<li>stdin类只负责提供读取标准输入的函数</li>
+</ul>
+<p><img src="zinx框架设计与实现讲义.assets/1560493722263.png" alt="1560493722263"></p>
+<p><strong>对象构造时机：</strong></p>
+<ul>
+<li>核心类：程序运行前创建，全局单例</li>
+<li>标准输入类：进入IO循环前创建，添加到kernel对象</li>
+</ul>
+<pre><code class="lang-c++">#include &lt;errno.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;sys/epoll.h&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class stdin_channel{
+public:
+    bool ReadFd(string &amp;_input)
+    {
+        cin &gt;&gt; _input;
+    }
+};
+
+class zinx_kernel{
+    stdin_channel m_channel;
+public:
+    int iEpollFd;
+    bool Add_Channel(stdin_channel &amp;_channel)
+    {
+        bool bRet = false;
+
+        struct epoll_event stEvent;
+        stEvent.events = EPOLLIN;
+        stEvent.data.ptr = &amp;_channel;
+
+        if (0 == epoll_ctl(iEpollFd, EPOLL_CTL_ADD, 0, &amp;stEvent))
+        {
+            m_channel = _channel;
+            bRet = true;
+        }
+
+
+        return bRet;
+    }
+    void Del_Channel(stdin_channel &amp;_channel)
+    {
+        epoll_ctl(iEpollFd, EPOLL_CTL_DEL, 0, NULL);
+    }
+    bool run()
+    {
+        int iEpollRet = -1;
+
+        for (;;)
+        {
+            struct epoll_event atmpEvent[100];
+            iEpollRet = epoll_wait(iEpollFd, atmpEvent, 100, -1);
+            if (-1 == iEpollRet)
+            {
+                if (EINTR == errno)
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+
+                }
+
+            }
+            for (int i = 0; i &lt; iEpollRet; i++)
+            {
+                stdin_channel *poChannel = static_cast&lt;stdin_channel *&gt;(atmpEvent[i].data.ptr);
+                if (0 != (EPOLLIN &amp; atmpEvent[i].events))
+                {
+                    string input;
+                    poChannel-&gt;ReadFd(input);
+                    cout &lt;&lt; input &lt;&lt;endl;
+                }
+
+            }
+        }
+
+
+    }
+};
+
+int main()
+{
+    zinx_kernel z;
+    stdin_channel s;
+    z.iEpollFd = epoll_create(1);
+    z.Add_Channel(s);
+    z.run();
+
+}
+
+</code></pre>
+<p><strong>完善单一业务：</strong></p>
+<ul>
+<li>kernel类写出单例，相关操作函数静态化</li>
+<li>epoll创建写成初始化函数</li>
+<li>有初始化就要有去初始化</li>
+<li>将kernel类和stdin类写到别的文件</li>
+</ul>
+<h2 id="2-2-">2.2 输出扩展---》抽象</h2>
+<p>定义标准输出类stdout，添加到epoll中，在EPOLLOUT时执行write</p>
+<p><strong>遇到的问题：</strong>输入通道类stdin和输出通道类stdout与很多相同点，无需写重复代码</p>
+<p><strong>抽象：</strong>定义通道抽象类，把输入和输出的不同通过虚函数扩展</p>
+<p><strong>通道抽象类设计</strong>：</p>
+<ul>
+<li>提供虚函数用于泛化读写</li>
+<li>提供虚函数用于返回对应的文件描述符</li>
+<li>epoll处理输出，所以需要输出缓冲区</li>
+<li>对外：提供输出数据调用（将数据放到输出缓冲区，等待epoll调用）</li>
+<li>对外：提供泛化扩展，用于处理输入的数据</li>
+</ul>
+<p><strong>kernel类适配修改</strong>：</p>
+<ul>
+<li>用抽象类指针list存储当前需要侦听的channel</li>
+<li>根据需求动态地调整epoll事件的监听种类</li>
+</ul>
+<p><strong>stdin类重构，stdout类创建</strong>:</p>
+<ul>
+<li>继承抽象通道类，实现纯虚函数</li>
+</ul>
+<p><img src="zinx框架设计与实现讲义.assets/1560755330461.png" alt="1560755330461"></p>
+<p>数据输入处理：</p>
+<p><img src="zinx框架设计与实现讲义.assets/1560750297601.png" alt="1560750297601"></p>
+<p>输出数据处理</p>
+<p><img src="zinx框架设计与实现讲义.assets/1560750765492.png" alt="1560750765492"></p>
+<p>总流程：</p>
+<p><img src="zinx框架设计与实现讲义.assets/1560751152513.png" alt="1560751152513"></p>
+<pre><code class="lang-c++">/*框架头文件*/
+class Ichannel {
+public:
+    virtual bool ReadFd(std::string &amp;_input) = 0;
+    virtual bool WriteFd(std::string &amp;_output) = 0;
+    virtual int GetFd() = 0;
+    virtual bool DataProcess(std::string &amp;_data) = 0;
+    void DataSendOut();
+    void DataPush(std::string &amp;_data);
+    std::list&lt;std::string&gt; m_write_buffer;
+};
+
+class ZinxKernel {
+private:
+    ZinxKernel();
+    ~ZinxKernel();
+    int iEpollFd = -1;
+    static ZinxKernel *poZinxKernel;
+    std::list&lt;Ichannel*&gt; m_channel_list;
+public:
+    static bool ZinxKernelInit();
+    static void ZinxKernelFini();
+    static void Zinx_Run();
+    static bool Zinx_Add_Channel(Ichannel &amp;_oChannel);
+    static void Zinx_Del_Channel(Ichannel &amp;_oChannel);
+    static void Zinx_SetChannelOut(Ichannel &amp;_oChannel);
+    static void Zinx_ClearChannelOut(Ichannel &amp;_oChannel);
+    static ZinxKernel *GetInstance() {
+        if (NULL == poZinxKernel)
+        {
+            poZinxKernel = new ZinxKernel();
+        }
+        return poZinxKernel;
+    }
+};
+</code></pre>
+<pre><code class="lang-c++">/*框架实现*/
+class Ichannel {
+public:
+    virtual bool ReadFd(std::string &amp;_input) = 0;
+    virtual bool WriteFd(std::string &amp;_output) = 0;
+    virtual int GetFd() = 0;
+    virtual bool DataProcess(std::string &amp;_data) = 0;
+    void DataSendOut();
+    void DataPush(std::string &amp;_data);
+    std::list&lt;std::string&gt; m_write_buffer;
+};
+
+class ZinxKernel {
+private:
+    ZinxKernel();
+    ~ZinxKernel();
+    int iEpollFd = -1;
+    static ZinxKernel *poZinxKernel;
+    std::list&lt;Ichannel*&gt; m_channel_list;
+public:
+    static bool ZinxKernelInit();
+    static void ZinxKernelFini();
+    static void Zinx_Run();
+    static bool Zinx_Add_Channel(Ichannel &amp;_oChannel);
+    static void Zinx_Del_Channel(Ichannel &amp;_oChannel);
+    static void Zinx_SetChannelOut(Ichannel &amp;_oChannel);
+    static void Zinx_ClearChannelOut(Ichannel &amp;_oChannel);
+    static ZinxKernel *GetInstance() {
+        if (NULL == poZinxKernel)
+        {
+            poZinxKernel = new ZinxKernel();
+        }
+        return poZinxKernel;
+    }
+};
+</code></pre>
+<pre><code class="lang-c++">/*业务编写，读用户输入，向终端输出*/
+#include &quot;Zinx.h&quot;
+
+using namespace std;
+
+class stdout_channel :public Ichannel {
+public:
+    // 通过 Ichannel 继承
+    virtual bool ReadFd(std::string &amp; _input) override
+    {
+        return false;
+    }
+
+    virtual bool WriteFd(std::string &amp; _output) override
+    {
+        cout &lt;&lt; _output &lt;&lt; endl;
+        return true;
+    }
+
+    virtual int GetFd() override
+    {
+        return 1;
+    }
+
+    virtual bool DataProcess(std::string &amp; _data) override
+    {
+        return false;
+    }
+
+} *poOut = new stdout_channel();
+
+class stdin_channel :public Ichannel {
+public:
+    // 通过 Ichannel 继承
+    virtual bool ReadFd(std::string &amp; _input) override
+    {
+        cin &gt;&gt; _input;
+        return true;
+    }
+
+    virtual bool WriteFd(std::string &amp; _output) override
+    {
+        return false;
+    }
+
+    virtual int GetFd() override
+    {
+        return 0;
+    }
+
+    virtual bool DataProcess(std::string &amp; _data) override
+    {
+        poOut-&gt;DataPush(_data);
+        return true;
+    }
+
+};
+
+int main()
+{
+    ZinxKernel::ZinxKernelInit();
+    ZinxKernel::Zinx_Add_Channel(*(new stdin_channel()));
+    ZinxKernel::Zinx_Add_Channel(*poOut);
+    ZinxKernel::Zinx_Run();
+    ZinxKernel::ZinxKernelFini();
+}
+</code></pre>
+<h2 id="2-3-">2.3功能多样化</h2>
+<p><strong>需求</strong>：若输入的是大写字母则原样输出，若不是则转大写输出</p>
+<p><strong>类设计</strong>：创建功能处理类，用于判断输入的字符是大写还是小写。无论输入是什么，都将其交给该类处理（依赖倒置）</p>
+<p><img src="zinx框架设计与实现讲义.assets/1560755457590.png" alt="1560755457590"></p>
+<p><strong>功能流程：</strong></p>
+<ul>
+<li>stdin通道类中包含一个功能处理类对象</li>
+<li>功能处理类中包含一个stdout类对象</li>
+<li>数据被读取到stdin通道，stdin通道将其交给功能处理类对象，该对象判断数据特点后转大写或直接交个stdout类对象进行输出</li>
+</ul>
+<p><img src="zinx框架设计与实现讲义.assets/1560756052975.png" alt="1560756052975"></p>
+<pre><code class="lang-c++">
+class process_func {
+public:
+    void DataProc(string &amp;_input)
+    {
+        string output = _input;
+        transform(output.begin(), output.end(), output.begin(),::toupper);
+        poOut-&gt;DataPush(output);
+    }
+} *poProcess = new process_func();
+
+class stdin_channel :public Ichannel {
+public:
+
+
+    // 通过 Ichannel 继承
+    virtual bool ReadFd(std::string &amp; _input) override
+    {
+        cin &gt;&gt; _input;
+        return true;
+    }
+
+    virtual bool WriteFd(std::string &amp; _output) override
+    {
+        return false;
+    }
+
+    virtual int GetFd() override
+    {
+        return 0;
+    }
+
+    virtual bool DataProcess(std::string &amp; _data) override
+    {
+        poProcess-&gt;DataProc(_data);
+        return true;
+    }
+
+};
+</code></pre>
+<h2 id="2-4-">2.4数据转移与数据处理抽象</h2>
+<p><strong>当前的现状</strong>：数据从键盘输入到屏幕输出，经历了好几个对象的链式处理。</p>
+<p><strong>合理的推测</strong>：随着功能的扩展和复杂化，不同的情况需要更多的处理方式</p>
+<p><strong>抽象：</strong> 创建抽象类用来按照某种规律依次处理和传递数据（责任链模式）</p>
+<p><img src="zinx框架设计与实现讲义.assets/责任链.png" alt="责任链"></p>
+<blockquote>
+<p>通道类和功能处理类的对象都是整个流程中的环节，将这些环节连起来则形成责任链</p>
+</blockquote>
+<p><strong>处理者类设计：</strong></p>
+<ul>
+<li>提供handle函数作为链式处理的入口</li>
+<li>handle内部执行当前环节的处理，并执行下一阶段的处理函数，直到没有下一环节</li>
+<li>提供internalhandle纯虚函数用来执行本环节处理</li>
+<li>提供getnext纯虚函数用来获取下一环节</li>
+</ul>
+<p><strong>消息类设计：</strong></p>
+<ul>
+<li>只提供虚析构函数，用户可自行扩展</li>
+</ul>
+<p><img src="zinx框架设计与实现讲义.assets/1560759454620.png" alt="1560759454620"></p>
+<p><img src="zinx框架设计与实现讲义.assets/1560760529778.png" alt="1560760529778"></p>
+<pre><code class="lang-c++">/*责任链设计*/
+class IZinxMsg {
+public:
+    IZinxMsg() {}
+    virtual ~IZinxMsg() {}
+};
+
+class AZinxHandler {
+public:
+    AZinxHandler() {}
+    virtual ~AZinxHandler() {}
+    void Handle(IZinxMsg &amp;_oInput);
+protected:
+    virtual IZinxMsg *InternelHandle(IZinxMsg &amp;_oInput) = 0;
+    virtual AZinxHandler *GetNextHandler(IZinxMsg &amp;_oNextMsg) = 0;
+};
+</code></pre>
+<pre><code class="lang-c++">/*责任链实现*/
+void AZinxHandler::Handle(IZinxMsg &amp; _oInput)
+{
+    IZinxMsg *poNextMsg = NULL;
+    AZinxHandler *poNextHandler = NULL;
+
+    poNextMsg = InternelHandle(_oInput);
+    if (NULL != poNextMsg)
+    {
+        poNextHandler = GetNextHandler(*poNextMsg);
+        if (NULL != poNextHandler)
+        {
+            poNextHandler-&gt;Handle(*poNextMsg);
+        }
+
+        delete poNextMsg;
+    }
+
+    return;
+}
+</code></pre>
+<pre><code class="lang-c++">/*责任链测试：将一串字符串交给处理者1进行首字母大写并输出，然后转交给处理者2进行字符统计并输出*/
+class str_msg :public IZinxMsg {
+public:
+    str_msg(string &amp;_content):content(_content) {}
+    string content;
+};
+
+class h2_Count :public AZinxHandler {
+    // 通过 AZinxHandler 继承
+    virtual IZinxMsg * InternelHandle(IZinxMsg &amp; _oInput) override
+    {
+        auto input = dynamic_cast&lt;str_msg&amp;&gt;(_oInput);
+        cout &lt;&lt; &quot;处理者2处理开始&quot; &lt;&lt; endl;
+        cout &lt;&lt; input.content.size() &lt;&lt; endl;
+        cout &lt;&lt; &quot;处理者2处理结束&quot; &lt;&lt; endl;
+        return NULL;
+    }
+    virtual AZinxHandler * GetNextHandler(IZinxMsg &amp; _oNextMsg) override
+    {
+        return nullptr;
+    }
+} h2;
+
+class h1_UpperFirst :public AZinxHandler {
+    // 通过 AZinxHandler 继承
+    virtual IZinxMsg * InternelHandle(IZinxMsg &amp; _oInput) override
+    {
+        auto input = dynamic_cast&lt;str_msg&amp;&gt;(_oInput);
+        cout &lt;&lt; &quot;处理者1处理开始&quot; &lt;&lt; endl;
+        str_msg *pret = new str_msg(input.content);
+        auto head = pret-&gt;content.begin();
+        transform(head, head+1, head, ::toupper);
+        cout &lt;&lt; pret-&gt;content &lt;&lt; endl;
+        cout &lt;&lt; &quot;处理者1处理结束&quot; &lt;&lt; endl;
+        return pret;
+    }
+    virtual AZinxHandler * GetNextHandler(IZinxMsg &amp; _oNextMsg) override
+    {
+        return &amp;h2;
+    }
+} h1;
+
+int main()
+{
+    string input = &quot;hello&quot;;
+    str_msg input_msg(input);
+    h1.Handle(input_msg);
+}
+</code></pre>
+<p><strong>重构通道类和功能处理类</strong>（继承handler类）：</p>
+<ul>
+<li>通道类的data_process函数不要了，通过重写internelhandle实现</li>
+<li>功能处理类的dataproc函数不要了，通过重写internelhandle实现</li>
+<li>stdin类通过重写getnext方法返回功能处理对象</li>
+<li>功能处理类重写getnext方法返回stdout对象</li>
+</ul>
+<p><strong>重构kernel类：</strong></p>
+<ul>
+<li>epoll中不再执行channel类的方法，替换成handler类的handle方法</li>
+<li>kernel类判断当前epoll的触发方向并将其封装为消息类对象传递给通道类</li>
+<li>kernel增加函数用来处理程序向外发送数据（取代直接调用通道类的sendout函数）</li>
+</ul>
+<p><strong>创建消息类（继承message类）</strong>：</p>
+<ul>
+<li>创建IO方向类用来让epoll给channel对象传递当前ready的IO方向</li>
+<li>创建byte消息类用来让channel对象给功能处理对象传递待处理字符串</li>
+<li>逐级继承保证消息内容丰富性</li>
+</ul>
+<p><img src="zinx框架设计与实现讲义.assets/1560762506309.png" alt="1560762506309"></p>
+<pre><code class="lang-c++">/*重构类---设计*/
+
+#define GET_REF2DATA(type, ref, orig)  type * pref = dynamic_cast&lt;type *&gt;(&amp;orig); if (nullptr == pref) {return nullptr;} type &amp;ref = dynamic_cast&lt;type&amp;&gt;(orig)
+
+class IZinxMsg {
+public:
+    IZinxMsg() {}
+    virtual ~IZinxMsg() {}
+};
+
+class SysIOReadyMsg :public IZinxMsg {
+public:
+    enum IO_DIC {
+        IN, OUT
+    } m_emIoDic;
+
+    SysIOReadyMsg(IO_DIC _dic) :m_emIoDic(_dic) {}
+};
+class BytesMsg :public SysIOReadyMsg {
+public:
+    BytesMsg(SysIOReadyMsg &amp;_base) :SysIOReadyMsg(_base.m_emIoDic) {}
+    std::string szData;
+};
+class AZinxHandler {
+public:
+    AZinxHandler() {}
+    virtual ~AZinxHandler() {}
+    void Handle(IZinxMsg &amp;_oInput);
+protected:
+    virtual IZinxMsg *InternelHandle(IZinxMsg &amp;_oInput) = 0;
+    virtual AZinxHandler *GetNextHandler(IZinxMsg &amp;_oNextMsg) = 0;
+};
+class Ichannel:public AZinxHandler {
+public:
+    virtual bool ReadFd(std::string &amp;_input) = 0;
+    virtual bool WriteFd(std::string &amp;_output) = 0;
+    virtual int GetFd() = 0;
+    void DataSendOut();
+    void DataPush(std::string &amp;_data);
+    std::list&lt;std::string&gt; m_write_buffer;
+
+    virtual IZinxMsg * InternelHandle(IZinxMsg &amp; _oInput) override;
+};
+class ZinxKernel {
+    static void Zinx_SendOut(std::string &amp;_output, Ichannel &amp;_oChannel);
+};
+</code></pre>
+<pre><code class="lang-c++">/*重构实现*/
+void ZinxKernel::Zinx_Run()
+{
+    int iEpollRet = -1;
+
+    for(;;)
+    {
+        struct epoll_event atmpEvent[100];
+        iEpollRet = epoll_wait(GetInstance()-&gt;iEpollFd, atmpEvent, 100, -1);
+        if (-1 == iEpollRet)
+        {
+            if (EINTR == errno)
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+        for (int i = 0; i &lt; iEpollRet; i++)
+        {
+            Ichannel *poChannel = static_cast&lt;Ichannel *&gt;(atmpEvent[i].data.ptr);
+            if (0 != (EPOLLIN &amp; atmpEvent[i].events))
+            {
+                string input;
+                SysIOReadyMsg IoStat = SysIOReadyMsg(SysIOReadyMsg::IN);
+                poChannel-&gt;Handle(IoStat);
+            }
+            if (0 != (EPOLLOUT &amp; atmpEvent[i].events))
+            {
+                poChannel-&gt;DataSendOut();
+                if (poChannel-&gt;m_write_buffer.empty())
+                {
+                    Zinx_ClearChannelOut(*poChannel);
+                }
+            }
+        }
+    }
+}
+void ZinxKernel::Zinx_SendOut(std::string &amp; _output, Ichannel &amp; _oChannel)
+{
+    SysIOReadyMsg iodic = SysIOReadyMsg(SysIOReadyMsg::OUT);
+    BytesMsg oBytes = BytesMsg(iodic);
+    oBytes.szData = _output;
+    _oChannel.Handle(oBytes);
+}
+IZinxMsg * Ichannel::InternelHandle(IZinxMsg &amp; _oInput)
+{
+    IZinxMsg *poRet = NULL;
+    GET_REF2DATA(SysIOReadyMsg, oIoStat, _oInput);
+    if (oIoStat.m_emIoDic == SysIOReadyMsg::IN)
+    {
+        BytesMsg *poBytes = new BytesMsg(oIoStat);
+        if (true == ReadFd(poBytes-&gt;szData))
+        {
+            poRet = poBytes;
+        }
+        else
+        {
+            delete poBytes;
+        }
+    }
+    else if (oIoStat.m_emIoDic == SysIOReadyMsg::OUT)
+    {
+        GET_REF2DATA(BytesMsg, oBytes, _oInput);
+        if (true == m_write_buffer.empty())
+        {
+            ZinxKernel::Zinx_SetChannelOut(*this);
+        }
+        m_write_buffer.push_back(oBytes.szData);
+    }
+
+    return poRet;
+}
+</code></pre>
+<pre><code class="lang-c++">/*重构后测试*/
+#include &quot;Zinx.h&quot;
+#include &lt;algorithm&gt;
+using namespace std;
+
+class stdout_channel :public Ichannel {
+public:
+    virtual bool ReadFd(std::string &amp; _input) override
+    {
+        return false;
+    }
+    virtual bool WriteFd(std::string &amp; _output) override
+    {
+        cout &lt;&lt; _output &lt;&lt; endl;
+        return true;
+    }
+    virtual int GetFd() override
+    {
+        return 1;
+    }
+    virtual AZinxHandler * GetNextHandler(IZinxMsg &amp; _oNextMsg) override
+    {
+        return nullptr;
+    }
+
+} *poOut = new stdout_channel();
+
+class process_func :public AZinxHandler{
+public:
+    void DataProc(string &amp;_input)
+    {
+        string output = _input;
+        transform(output.begin(), output.end(), output.begin(),::toupper);
+        poOut-&gt;DataPush(output);
+    }
+    virtual IZinxMsg * InternelHandle(IZinxMsg &amp; _oInput) override
+    {
+        GET_REF2DATA(BytesMsg, input, _oInput);
+        string output = input.szData;
+        transform(output.begin(), output.end(), output.begin(), ::toupper);
+        ZinxKernel::Zinx_SendOut(output, *poOut);
+        return NULL;
+    }
+    virtual AZinxHandler * GetNextHandler(IZinxMsg &amp; _oNextMsg) override
+    {
+        return nullptr;
+    }
+} *poProcess = new process_func();
+
+class stdin_channel :public Ichannel {
+public:
+    virtual bool ReadFd(std::string &amp; _input) override
+    {
+        cin &gt;&gt; _input;
+        return true;
+    }
+
+    virtual bool WriteFd(std::string &amp; _output) override
+    {
+        return false;
+    }
+
+    virtual int GetFd() override
+    {
+        return 0;
+    }
+    virtual AZinxHandler * GetNextHandler(IZinxMsg &amp; _oNextMsg) override
+    {
+        return poProcess;
+    }
+
+};
+
+int main()
+{
+    ZinxKernel::ZinxKernelInit();
+    ZinxKernel::Zinx_Add_Channel(*(new stdin_channel()));
+    ZinxKernel::Zinx_Add_Channel(*poOut);
+    ZinxKernel::Zinx_Run();
+    ZinxKernel::ZinxKernelFini();
+}
+</code></pre>
+<h1 id="3-">3范式统一和细节完善</h1>
+<p>一般的IO处理过程可以高度抽象为3个部分或层次，数据收发，协议转换，业务处理。所以基于现有责任链模式的处理机制，可以提供三个抽象类，通道，协议，角色类用于组合起来处理IO业务</p>
+<ul>
+<li><p>通道类继承handler</p>
+<ul>
+<li>internalhandle函数进行数据读取并存储到ByteMsg消息或将ByteMsg消息存入发送缓冲区等待发送</li>
+<li>提供SetChannelClose函数用于告诉kernel该通道需要关闭</li>
+<li>提供readfd纯虚函数和writefd纯虚函数用于泛化不同文件类型的读写</li>
+<li>提供init纯虚函数和fini纯虚函数用于泛化不同文件的初始化和去初始化操作</li>
+<li>提供GetInputNextStage纯虚函数用于泛化不同输入数据的不同处理方式</li>
+</ul>
+</li>
+<li><p>协议类继承handler</p>
+<ul>
+<li>internalhandle函数进行ByteMsg数据和用户数据之间的相互转换</li>
+<li>提供raw2request和response2raw纯虚函数用于泛化不同协议对字节流和用户数据之间的不同处理方式</li>
+<li>提供GetMsgProcessor纯虚函数用于泛化不同协议数据分发的方式</li>
+<li>提供GetMsgSender纯虚函数用于泛化不同协议对数据发送通道的选择</li>
+</ul>
+</li>
+<li><p>角色类继承handler</p>
+<ul>
+<li>internalhandle函数处理各种用户数据</li>
+<li>提供ProcMsg纯虚函数用于泛化不同业务的不同处理方式</li>
+<li>提供init和fini函数用于泛化不同业务处理实体的初始化和去初始化过程</li>
+<li>提供调用SetNextProcessor和ClearNextProcessor函数可以动态地指定下一个责任链节点</li>
+</ul>
+</li>
+<li><p>kernel类</p>
+<ul>
+<li>提供run函数监听所有通道，是框架循环主体</li>
+<li>提供三层对象（通道，协议，角色）的资源管理（add，del），记录对象指针但不负责对象内存（在且只在框架退出时强制释放所有记录在kernel的对象）</li>
+<li>提供Zinx_SendOut函数的两个重载版本用于向外发送数据</li>
+</ul>
+<p><img src="zinx框架设计与实现讲义.assets/1560788969989.png" alt="1560788969989"></p>
+</li>
+</ul>
+<h1 id="4-">4框架构建</h1>
+<p>框架应该编译为动态库，并且应该支持安装到目标计算机。</p>
+<pre><code class="lang-makefile">libzinx.so:*.c* *.h
+    g++ -std=c++11 -fPIC -shared $^ -o $@
+install:
+    cp libzinx.so /usr/lib/
+    cp *.h /usr/include/
+</code></pre>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
