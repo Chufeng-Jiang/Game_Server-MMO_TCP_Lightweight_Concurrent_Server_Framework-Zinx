@@ -1,5 +1,6 @@
 ﻿#include <zinx.h>
 #include <iostream>
+
 using namespace std;
 /*读标准输入，回显到标准输出*/
 
@@ -44,17 +45,14 @@ class Echo :public AZinxHandler {
 	{
 		/*回显到标准输出*/
 		GET_REF2DATA(BytesMsg, input, _oInput);
-
-		//写一个标准输出类的通道，交给通道进行输出
 		Ichannel* poSendOut = ZinxKernel::Zinx_GetChannel_ByInfo("stdout");
-
 		if (NULL != poSendOut)
 		{
 			ZinxKernel::Zinx_SendOut(input.szData, *poSendOut);
 		}
+
 		return nullptr;
 	}
-
 	virtual AZinxHandler* GetNextHandler(IZinxMsg& _oNextMsg) override
 	{
 		return nullptr;
@@ -98,7 +96,6 @@ class AddDate :public AZinxHandler {
 		return poEcho;
 	}
 } *poAddDate = new AddDate();
-
 class CmdHandler :public AZinxHandler {
 	int status = 0;
 	// 通过 AZinxHandler 继承
@@ -199,6 +196,7 @@ int main()
 
 	/*5-运行框架*/
 	ZinxKernel::Zinx_Run();
+
 	ZinxKernel::ZinxKernelFini();
 	return 0;
 }

@@ -35,7 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{ef2480af-ba90-4847-a733-79ae3775d52a}</ProjectGuid>
+    <ProjectGuid>{e2c40099-cd0a-4b22-8337-b354abc92688}</ProjectGuid>
     <Keyword>Linux</Keyword>
     <RootNamespace>zinxTest</RootNamespace>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
@@ -80,49 +80,41 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <Link>
       <LibraryDependencies>zinx</LibraryDependencies>
-      <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
