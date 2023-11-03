@@ -75,7 +75,17 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="CmdCheck.cpp" />
+    <ClCompile Include="CmdMsg.cpp" />
+    <ClCompile Include="EchoRole.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="StdInOutChannel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CmdCheck.h" />
+    <ClInclude Include="CmdMsg.h" />
+    <ClInclude Include="EchoRole.h" />
+    <ClInclude Include="StdInOutChannel.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
