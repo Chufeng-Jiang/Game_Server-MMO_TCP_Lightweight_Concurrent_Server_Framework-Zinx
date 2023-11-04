@@ -92,8 +92,7 @@ Irole * CmdCheck::GetMsgProcessor(UserDataMsg & _oUserDataMsg)
 				break;
 			}
 		}
-	}
-	
+	}	
 	return pRetRole;
 }
 

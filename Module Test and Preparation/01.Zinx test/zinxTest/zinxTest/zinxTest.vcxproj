@@ -75,6 +75,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\黑马C++补充\课件\第6阶段-游戏服务器开发\第6阶段-游戏服务器开发\游戏服务器项目\day3\1-代码\prj2_zinx_study\prj2_zinx_study\ZinxTimer.cpp" />
     <ClCompile Include="CmdCheck.cpp" />
     <ClCompile Include="CmdMsg.cpp" />
     <ClCompile Include="EchoRole.cpp" />
@@ -82,6 +83,7 @@
     <ClCompile Include="StdInOutChannel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\黑马C++补充\课件\第6阶段-游戏服务器开发\第6阶段-游戏服务器开发\游戏服务器项目\day3\1-代码\prj2_zinx_study\prj2_zinx_study\ZinxTimer.h" />
     <ClInclude Include="CmdCheck.h" />
     <ClInclude Include="CmdMsg.h" />
     <ClInclude Include="EchoRole.h" />

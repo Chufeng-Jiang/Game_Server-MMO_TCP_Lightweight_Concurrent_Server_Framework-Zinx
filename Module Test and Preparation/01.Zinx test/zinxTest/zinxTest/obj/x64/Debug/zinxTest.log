@@ -4,10 +4,15 @@
   正在验证体系结构
   正在启动远程生成
   正在编译源:
+  ZinxTimer.cpp
   CmdCheck.cpp
   CmdMsg.cpp
   EchoRole.cpp
   main.cpp
   StdInOutChannel.cpp
+  test_timer.cpp
   正在链接对象
-  zinxTest.vcxproj -> F:\Git Repo\Zinx Framework Game Server\Module Test and Preparation\01.Zinx test\zinxTest\zinxTest\bin\x64\Debug\zinxTest.out
+F:\Git Repo\Zinx Framework Game Server\Module Test and Preparation\01.Zinx test\zinxTest\zinxTest\obj\x64\Debug\test_timer.o : error : In function `main':
+F:\Git Repo\Zinx Framework Game Server\Module Test and Preparation\01.Zinx test\zinxTest\zinxTest\test_timer.cpp(5): error : multiple definition of `main'
+F:\Git Repo\Zinx Framework Game Server\Module Test and Preparation\01.Zinx test\zinxTest\zinxTest\obj\x64\Debug\main.o : error : /root/projects/zinxTest/Git Repo/Zinx Framework Game Server/Module Test and Preparation/01.Zinx test/zinxTest/zinxTest/main.cpp:191: first defined here
+collect2 : error : ld returned 1 exit status
