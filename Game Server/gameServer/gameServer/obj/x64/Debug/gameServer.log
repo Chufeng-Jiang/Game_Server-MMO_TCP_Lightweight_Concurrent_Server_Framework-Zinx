@@ -1,0 +1,13 @@
+﻿  正在验证源
+  正在将源远程复制到“192.168.111.135”
+  正在验证体系结构
+  正在验证体系结构
+  正在启动远程生成
+  正在编译源:
+  GameChannel.cpp
+  GameMsg.cpp
+  GameProtocol.cpp
+  GameRole.cpp
+  main.cpp
+  正在链接对象
+  gameServer.vcxproj -> F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\bin\x64\Debug\gameServer.out
