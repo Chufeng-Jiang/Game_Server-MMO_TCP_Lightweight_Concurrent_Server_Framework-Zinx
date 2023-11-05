@@ -2,13 +2,15 @@
 #include <zinx.h>
 
 class GameChannel;  //避免循环引用
-
+class GameRole;
 class GameProtocol :
     public Iprotocol
 {
     std::string szLast; //上次未来得及处理的报文
 public:
     GameChannel* m_channel = NULL;
+    GameRole* m_Role = NULL;
+
     GameProtocol() ;
     virtual ~GameProtocol();
 

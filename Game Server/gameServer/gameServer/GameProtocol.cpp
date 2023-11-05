@@ -3,6 +3,7 @@
 #include "GameMsg.h"
 #include "GameChannel.h"
 #include "msg.pb.h"
+#include "GameRole.h"
 using namespace std;
 
 GameProtocol::GameProtocol()
@@ -11,6 +12,11 @@ GameProtocol::GameProtocol()
 
 GameProtocol::~GameProtocol()
 {
+	if (NULL != m_Role)
+	{
+		ZinxKernel::Zinx_Del_Role(*m_Role);
+		delete m_Role;
+	}
 }
 
 /*输入参数是通道传来的原始报文
@@ -58,6 +64,7 @@ UserData* GameProtocol::raw2request(std::string _szInput)
 	}
 
 	//Debug打印每条请求
+	/*
 	for (auto single : pRet->m_Msgs)
 	{
 		cout << single->pMsg->Utf8DebugString() << endl;
@@ -69,6 +76,8 @@ UserData* GameProtocol::raw2request(std::string _szInput)
 	GameMsg* pGameMsg = new GameMsg(GameMsg::MSG_TYPE_CHAT_CONTENT, pmsg);
 
 	ZinxKernel::Zinx_SendOut(*(pGameMsg), *this);
+	*/
+
 	return pRet;
 }
 
@@ -102,7 +111,7 @@ std::string* GameProtocol::response2raw(UserData& _oUserData)
 
 Irole* GameProtocol::GetMsgProcessor(UserDataMsg& _oUserDataMsg)
 {
-	return nullptr;
+	return m_Role;
 }
 
 /*返回数据发送的通道*/

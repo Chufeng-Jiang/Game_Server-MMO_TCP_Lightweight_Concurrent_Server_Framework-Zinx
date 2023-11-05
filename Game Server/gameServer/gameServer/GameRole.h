@@ -1,10 +1,12 @@
 ﻿#pragma once
 #include "zinx.h"
+
+class GameProtocol;
+
 class GameRole :
     public Irole
 {
 public:
-
     GameRole() ;
     virtual ~GameRole();
 
@@ -12,5 +14,7 @@ public:
     virtual bool Init() override;
     virtual UserData* ProcMsg(UserData& _poUserData) override;
     virtual void Fini() override;
+
+    GameProtocol* m_pProto = NULL;
 };
 

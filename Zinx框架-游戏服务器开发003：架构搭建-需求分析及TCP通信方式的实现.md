@@ -19,18 +19,17 @@
 - 客户端断开时，向**周围**玩家发送其断开的消息
 
 ## 2.2 消息的格式和定义
-
-+ 消息定义
+- 消息定义
 
 每一条服务器和客户端之前的消息都应该满足以下格式
 
-> |消息内容的长度（4个字节，低字节在前）|消息ID（4个字节，低字节在前）|消息内容|
+> 消息内容的长度（4个字节，低字节在前）| 消息ID（4个字节，低字节在前）|  消息内容 |
 
-+ 详细定义如下:
+
 
 消息以及其处理方式已经在客户端实现，本项目要实现的是**服务器端的相关处理**
 
-详细定义如下
+- 详细定义如下
 
 | 消息ID | 消息内容                                      | 发送方向 | 客户端处理               | 服务器处理                   |
 | ------ | --------------------------------------------- | -------- | ------------------------ | ---------------------------- |
@@ -45,6 +44,11 @@
 # 3 基于Tcp连接的通信方式
 
 ## 3.1 通道层实现GameChannel类
+
+> + GameChannel::GetInputNextStage 函数中直接返回成员变量中的协议对象
+> + GameChannel 的析构函数中要一并从kernel中摘掉协议对象，玩家对象并析构之
+> + GameChannelFac::CreateTcpDataChannel 函数要一并创建通道对象，协议对象，玩家对象，并将这三者绑定起来，添加到kernel中
+
 ### 3.1.1 TcpChannel类
 + 使用框架提供的Tcp通信类
 + 创建GameChannel类继承ZinxTcpData，重写GetInputNextStage函数，将tcp收到的数据交给协议对象解析
@@ -108,9 +112,15 @@ UserData* GameProtocol::raw2request(std::string _szInput)
 }
 ```
 
-![在这里插入图片描述](./assets/3bb240f513a949c799bcdf7c3a4f4104.png)
-![在这里插入图片描述](./assets/5608c2e7df3243c5a6b1b65217a35dbc.png)
-## 3.2 消息类的结构设计和实现
+![在这里插入图片描述](./assets/3bb240f513a949c799bcdf7c3a4f4104-1699207663597-2.png)
+![在这里插入图片描述](./assets/5608c2e7df3243c5a6b1b65217a35dbc-1699207663599-4.png)
+## 3.2 协议层与消息类
+
+> + GameProtocol::GetMsgProcessor 函数即返回绑定的玩家对象
+> + GameProtocol::GetMsgSender 函数即返回绑定的通道对象
+> + GameProtocol::response2raw 函数要返回消息内容编码后的字节流（将GameMsg 对象中每个消息对象序列化并结合长度消息ID一起粘合起来）
+> + GameProtocol::raw2request 函数要将一串tcp数据流转换成游戏消息
+
 ### 3.2.1 消息的定义
 
 ```c
@@ -274,7 +284,7 @@ std::string GameMsg::serialize()
 ```
 
 ### 3.2.5 代码测试-1
-![在这里插入图片描述](./assets/703987d7afa84f609fb92a1303943f40.png)
+![在这里插入图片描述](./assets/703987d7afa84f609fb92a1303943f40-1699207663599-6.png)
 ### 3.2.6 报文里的多条请求
 
 ```c
@@ -299,8 +309,17 @@ public:
 	}
 ```
 
-### 3.2.7 Tcp报文粘包的处理
-添加数据头4+ID4+数据信息
+### 3.2.7 Tcp报文粘包的处理 
+**问题**：tcp或类似的流式文件无法保证收到的数据按照期望的格式分割。
+
+**举例**：服务器期望接收2个字节的数据作为一个合理请求。客户端发送了两个请求（四个字节）后，由于网络拥塞，服务器收到了1个字节后，recv返回，1秒钟后，数据到来，再次调用recv会收到3个字节。
+
+**常规套路**：
+
+> 1. 设定报文边界，一般使用Tag Length Value的格式
+> 2. recv数据后，若接收缓冲区当前数据长度小于报文内规定长度，则保留当前缓冲区，下次recv数据后重新处理（缓存）
+> 3. 若接收缓冲区数据长度大于等于报文内规定长度，则循环生成生成请求并保留后续多余的数据等待下次recv数据后重新处理（滑窗）
+
 
 ```c
 UserData* GameProtocol::raw2request(std::string _szInput)
@@ -380,26 +399,29 @@ std::string * GameProtocol::response2raw(UserData & _oUserData)
 	return pret;
 }
 ```
-### 3.2.8 数据包测试
+### 3.2.8 数据包代码测试
 #### 3.2.8.1 完整数据
 
 ```c
-08 00 00 00 01 00 00 00 08 01 12 04 74 65 73 74
+08000000010000000801120474657374
 ```
 `08 00 00 00`  - 前4个字节存储数据消息的长度，变量值是数据消息的长度为8个字节。
 `01 00 00 00` - 第5-8个字节存储的是用户的ID，变量值表示用户ID是1
 `08 01 12 04 74 65 73 74 `- 末尾8个字节表示数据消息的全部内容
-![在这里插入图片描述](./assets/0d1b6e41ed974dbf8fdff68084d41d67.png)
+![在这里插入图片描述](./assets/0d1b6e41ed974dbf8fdff68084d41d67-1699207663599-8.png)
 
 
-![在这里插入图片描述](./assets/43211d3b14f54064be71dc9718906ada.png)
+![在这里插入图片描述](./assets/43211d3b14f54064be71dc9718906ada-1699207663600-10.png)
 #### 3.2.8.2 数据缺失和错误
 收到数据以后，啥都不干
 
-![在这里插入图片描述](./assets/41989eddf7d94406b55ebd89dc4bf00d.png)
+![在这里插入图片描述](./assets/41989eddf7d94406b55ebd89dc4bf00d-1699207663600-12.png)
 ### 3.2.9 协议和通道相互绑定
 
 #### 3.2.9.1 循环引用的问题
+
+一般地来说，不涉及使用类的成员的时候，尽量避免使用头文件，直接声明一个类即可。
+
 在`GameChannel.h`中引用了头文件`"GameProtocol.h"`
 
 ```c
@@ -438,10 +460,36 @@ public:
 ```
 
 #### 3.2.9.1 相互绑定的实现
-![在这里插入图片描述](./assets/7a2b473eb6564e38984d733515e0a96e.png)
+![在这里插入图片描述](./assets/7a2b473eb6564e38984d733515e0a96e-1699207663600-14.png)
 
 
 #### 3.2.9.3 代码测试
+
+```c
+	pb::SyncPid* pmsg = new pb::SyncPid();
+	pmsg->set_pid(1);
+	pmsg->set_username("test");
+
+	GameMsg gm(GameMsg::MSG_TYPE_LOGIN_ID_NAME, pmsg);
+	auto output = gm.serialize();
+
+	for (auto byte : output)
+	{
+		printf("%02X ", byte);
+	}
+	puts("");
+
+	
+	char buff[] = { 0x08, 0x01, 0x12, 0x04 ,0x74, 0x65, 0x73, 0x74 };
+	std::string input(buff, sizeof(buff));
+
+	auto ingm = GameMsg(GameMsg::MSG_TYPE_LOGIN_ID_NAME, input);
+	std::cout << dynamic_cast<pb::SyncPid*> (ingm.pMsg)->pid() << std::endl;
+	std::cout << dynamic_cast<pb::SyncPid*> (ingm.pMsg)->username() << std::endl;
+	
+
+```
+
 收到数据
 
 ```c
@@ -451,5 +499,124 @@ public:
 `02 00 00 00` - 消息ID是2
 `0A 05 68 65 6C 6C 6F` - 转换成string代表"hello"
 
-![在这里插入图片描述](./assets/8c6cff37851d423a9f7e7874be7beab2.png)
-![在这里插入图片描述](./assets/82c58abb9fad499592a0365c4656fe90.png)
+![在这里插入图片描述](./assets/8c6cff37851d423a9f7e7874be7beab2-1699207663600-16.png)
+![在这里插入图片描述](./assets/82c58abb9fad499592a0365c4656fe90-1699207663600-18.png)
+## 3.3 业务层玩家类的创建
+![image-20231105100955606](./assets/image-20231105100955606.png)
+
+### 3.3.1 在Role中绑定协议
+
+```c
+class GameProtocol;
+
+class GameRole :
+    public Irole
+{
+public:
+    GameRole() ;
+    virtual ~GameRole();
+
+    // 通过 Irole 继承
+    virtual bool Init() override;
+    virtual UserData* ProcMsg(UserData& _poUserData) override;
+    virtual void Fini() override;
+
+    GameProtocol* m_pProto = NULL;
+};
+```
+
+### 3.3.2 在协议中绑定一个role
+
+```c
+class GameChannel;  //避免循环引用
+class GameRole;
+class GameProtocol :
+    public Iprotocol
+{
+    std::string szLast; //上次未来得及处理的报文
+public:
+    GameChannel* m_channel = NULL;
+    GameRole* m_Role = NULL;
+
+    GameProtocol() ;
+    virtual ~GameProtocol();
+
+    // 通过 Iprotocol 继承
+    virtual UserData* raw2request(std::string _szInput) override;
+    virtual std::string* response2raw(UserData& _oUserData) override;
+    virtual Irole* GetMsgProcessor(UserDataMsg& _oUserDataMsg) override;
+    virtual Ichannel* GetMsgSender(BytesMsg& _oBytes) override;
+};
+
+```
+
+### 3.3.3 在tcp中绑定协议和玩家对象
+
+```cpp
+ZinxTcpData* GameConnFact::CreateTcpDataChannel(int _fd)
+{
+/*创建tcp通道对象*/
+	auto pChannel = new GameChannel(_fd);
+/*创建协议对象*/
+	auto pProtocol = new GameProtocol();
+	/*创建玩家对象*/
+	auto pRole = new GameRole();
+
+	/*绑定协议对象和通道对象*/
+	pChannel->m_proto = pProtocol;
+	pProtocol->m_channel = pChannel;
+
+	/*绑定协议对象和玩家对象*/
+	pProtocol->m_Role = pRole;
+	pRole->m_pProto = pProtocol;
+
+/*将协议对象添加到kernel, 注意参数需要为指针*/
+	ZinxKernel::Zinx_Add_Proto(*pProtocol);
+
+	/*将玩家对象添加到kernel*/
+	ZinxKernel::Zinx_Add_Role(*pRole);
+	return pChannel;
+}
+```
+
+### 3.3.4 重写协议层获取角色处理对象
+
+```c
+Irole* GameProtocol::GetMsgProcessor(UserDataMsg& _oUserDataMsg)
+{
+	return m_Role;
+}
+```
+
+### 3.3.5 修改角色Init函数
+
+```c
+bool GameRole::Init()
+{
+	return true;
+}
+```
+
+### 3.3.6 测试代码
+
+```c
+/*处理游戏相关的用户请求*/
+UserData* GameRole::ProcMsg(UserData& _poUserData)
+{
+	/*测试：打印消息内容*/
+	GET_REF2DATA(MultiMsg, input, _poUserData);
+
+	for (auto single : input.m_Msgs)
+	{
+		cout << "type is" << single->enMsgType << endl;
+		cout << single->pMsg->Utf8DebugString() << endl;
+	}
+
+	return nullptr;
+
+```
+
+```c
+08000000010000000801120474657374
+```
+![在这里插入图片描述](./assets/42a8fd43ca36412abefd2eb5bc3f361f.png)
