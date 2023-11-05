@@ -8,7 +8,7 @@ class GameChannel :
 public:
     GameChannel(int _fd);
     virtual ~GameChannel();
-    GameProtocol* m_proto = NULL; 
+    GameProtocol * m_proto = NULL; 
     // 返回协议对象
     virtual AZinxHandler* GetInputNextStage(BytesMsg& _oInput) override;
 };

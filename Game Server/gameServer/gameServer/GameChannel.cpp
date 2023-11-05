@@ -21,9 +21,8 @@ ZinxTcpData* GameConnFact::CreateTcpDataChannel(int _fd)
 	auto pProtocol = new GameProtocol();
 /*绑定协议对象*/
 	pChannel->m_proto = pProtocol;
+	pProtocol->m_channel = pChannel;
 /*将协议对象添加到kernel, 注意参数需要为指针*/
 	ZinxKernel::Zinx_Add_Proto(*pProtocol);
-	//return new GameChannel(_fd);
 	return pChannel;
 }
-

@@ -1,9 +1,14 @@
 ﻿#pragma once
-#include "zinx.h"
+#include <zinx.h>
+
+class GameChannel;  //避免循环引用
+
 class GameProtocol :
     public Iprotocol
 {
+    std::string szLast; //上次未来得及处理的报文
 public:
+    GameChannel* m_channel = NULL;
     GameProtocol() ;
     virtual ~GameProtocol();
 
