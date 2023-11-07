@@ -6,6 +6,22 @@
   正在编译源:
   AOIWorld.cpp
   GameChannel.cpp
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :      if ('A' <= *i && *i <= 'Z') *i += 'a' - 'A';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :      if ('a' <= *i && *i <= 'z') *i += 'A' - 'a';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :      return strtol(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :                                      ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :      return strtoul(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :                                       ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(492,38): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(496,39): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
   GameMsg.cpp
 /usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
 /usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]

@@ -1,12 +1,19 @@
 ﻿#include "GameChannel.h"
 #include "GameRole.h"
 
+
 GameChannel::GameChannel(int _fd) :ZinxTcpData(_fd)
 {
 }
 
+
 GameChannel::~GameChannel()
 {
+	if (NULL != m_proto)
+	{
+		ZinxKernel::Zinx_Del_Proto(*m_proto);
+		delete m_proto;
+	}
 }
 
 AZinxHandler* GameChannel::GetInputNextStage(BytesMsg& _oInput)
@@ -16,9 +23,9 @@ AZinxHandler* GameChannel::GetInputNextStage(BytesMsg& _oInput)
 
 ZinxTcpData* GameConnFact::CreateTcpDataChannel(int _fd)
 {
-/*创建tcp通道对象*/
+	/*创建tcp通道对象*/
 	auto pChannel = new GameChannel(_fd);
-/*创建协议对象*/
+	/*创建协议对象*/
 	auto pProtocol = new GameProtocol();
 	/*创建玩家对象*/
 	auto pRole = new GameRole();
@@ -31,7 +38,7 @@ ZinxTcpData* GameConnFact::CreateTcpDataChannel(int _fd)
 	pProtocol->m_Role = pRole;
 	pRole->m_pProto = pProtocol;
 
-/*将协议对象添加到kernel, 注意参数需要为指针*/
+	/*将协议对象添加到kernel*/
 	ZinxKernel::Zinx_Add_Proto(*pProtocol);
 
 	/*将玩家对象添加到kernel*/
