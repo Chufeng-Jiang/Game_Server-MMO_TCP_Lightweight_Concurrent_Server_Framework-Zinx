@@ -107,6 +107,7 @@
     <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="AOIWorld.h" />
     <ClInclude Include="GameChannel.h" />
     <ClInclude Include="GameMsg.h" />
     <ClInclude Include="GameProtocol.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="msg.pb.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AOIWorld.cpp" />
     <ClCompile Include="GameChannel.cpp" />
     <ClCompile Include="GameMsg.cpp" />
     <ClCompile Include="GameProtocol.cpp" />

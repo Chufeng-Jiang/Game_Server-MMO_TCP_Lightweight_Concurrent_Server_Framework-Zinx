@@ -4,6 +4,7 @@
   正在验证体系结构
   正在启动远程生成
   正在编译源:
+  AOIWorld.cpp
   GameChannel.cpp
   GameMsg.cpp
 /usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
