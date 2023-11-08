@@ -1,0 +1,39 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.64.148'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  FIFO_channel.cpp
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(16,14): warning : ‘ByteMsg::content’ will be initialized after [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,95): warning : base ‘sysIODicMsg’ [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,2): warning : when initialized here [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\FIFO_channel.cpp(19,46): warning : conversion to ‘int’ from ‘ssize_t {aka long int}’ may alter its value [-Wconversion]
+C:\Users\markl\source\repos\create_zinx\FIFO_channel.cpp(19,46): warning :   int ilen = read(m_fd, szbuff, sizeof(szbuff));
+C:\Users\markl\source\repos\create_zinx\FIFO_channel.cpp(19,46): warning :                                               ^
+  Ichannel.cpp
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(16,14): warning : ‘ByteMsg::content’ will be initialized after [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,95): warning : base ‘sysIODicMsg’ [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,2): warning : when initialized here [-Wreorder]
+  main.cpp
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(16,14): warning : ‘ByteMsg::content’ will be initialized after [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,95): warning : base ‘sysIODicMsg’ [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,2): warning : when initialized here [-Wreorder]
+  ProcessFunc.cpp
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(16,14): warning : ‘ByteMsg::content’ will be initialized after [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,95): warning : base ‘sysIODicMsg’ [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,2): warning : when initialized here [-Wreorder]
+  stdin_channel.cpp
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(16,14): warning : ‘ByteMsg::content’ will be initialized after [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,95): warning : base ‘sysIODicMsg’ [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,2): warning : when initialized here [-Wreorder]
+  stdou_channel.cpp
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(16,14): warning : ‘ByteMsg::content’ will be initialized after [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,95): warning : base ‘sysIODicMsg’ [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,2): warning : when initialized here [-Wreorder]
+  ZinxHandler.cpp
+  zinxkernel.cpp
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(16,14): warning : ‘ByteMsg::content’ will be initialized after [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,95): warning : base ‘sysIODicMsg’ [-Wreorder]
+C:\Users\markl\source\repos\create_zinx\Ichannel.h(17,2): warning : when initialized here [-Wreorder]
+  Linking objects
+  create_zinx.vcxproj -> C:\Users\markl\source\repos\create_zinx\bin\x64\Debug\create_zinx.out
