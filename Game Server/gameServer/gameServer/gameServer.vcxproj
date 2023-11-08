@@ -75,36 +75,36 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <IncludePath>/usr/local/protobuf/include;$(IncludePath)</IncludePath>
-    <LibraryPath>/usr/local/protobuf/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/local/protobuf/include;/usr/local/include;$(IncludePath)</IncludePath>
+    <LibraryPath>/usr/local/protobuf/lib;/usr/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="AOIWorld.h" />
@@ -130,9 +130,13 @@
   <ItemGroup>
     <None Include="msg.proto" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="random_first.txt" />
+    <Text Include="random_last.txt" />
+  </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>
@@ -142,7 +146,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>
@@ -152,7 +156,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>
@@ -162,7 +166,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>
@@ -172,7 +176,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>
@@ -182,7 +186,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>
@@ -192,7 +196,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>
@@ -202,7 +206,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <Link>
-      <LibraryDependencies>zinx;pthread;protobuf</LibraryDependencies>
+      <LibraryDependencies>zinx;pthread;protobuf;hiredis</LibraryDependencies>
       <SharedLibrarySearchPath>%(SharedLibrarySearchPath)</SharedLibrarySearchPath>
     </Link>
     <ClCompile>

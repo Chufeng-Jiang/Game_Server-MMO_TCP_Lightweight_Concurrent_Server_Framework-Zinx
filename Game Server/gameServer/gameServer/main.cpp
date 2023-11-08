@@ -1,4 +1,4 @@
-ï»¿#include "GameChannel.h"
+#include "GameChannel.h"
 #include "GameMsg.h"
 #include "msg.pb.h"
 #include "AOIWorld.h"
@@ -11,8 +11,8 @@ int main()
 {
 	random_name.LoadFile();
 	ZinxKernel::ZinxKernelInit();
-	/*æ·»åŠ ç›‘å¬é€šé“*/
-	ZinxKernel::Zinx_Add_Channel(*(new ZinxTCPListen(8889, new GameConnFact())));
+	/*Ìí¼Ó¼àÌıÍ¨µÀ*/
+	ZinxKernel::Zinx_Add_Channel(*(new ZinxTCPListen(8899, new GameConnFact())));
 	ZinxKernel::Zinx_Add_Channel(*(new ZinxTimerChannel()));
 	ZinxKernel::Zinx_Run();
 	ZinxKernel::ZinxKernelFini();
