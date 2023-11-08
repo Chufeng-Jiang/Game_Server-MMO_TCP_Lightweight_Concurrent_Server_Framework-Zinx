@@ -113,6 +113,8 @@
     <ClInclude Include="GameProtocol.h" />
     <ClInclude Include="GameRole.h" />
     <ClInclude Include="msg.pb.h" />
+    <ClInclude Include="RandomName.h" />
+    <ClInclude Include="ZinxTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AOIWorld.cpp" />
@@ -122,6 +124,8 @@
     <ClCompile Include="GameRole.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="msg.pb.cc" />
+    <ClCompile Include="RandomName.cpp" />
+    <ClCompile Include="ZinxTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="msg.proto" />

@@ -1,18 +1,14 @@
-ï»¿#include "GameMsg.h"
+#include "GameMsg.h"
 #include "msg.pb.h"
 
 
-GameMsg::GameMsg(MSG_TYPE _type, google::protobuf::Message* _pMsg) :enMsgType(_type), pMsg(_pMsg)
-{
-	
-}
-GameMsg::~GameMsg()
+GameMsg::GameMsg(MSG_TYPE _type, google::protobuf::Message * _pMsg):enMsgType(_type),pMsg(_pMsg)
 {
 }
 
-GameMsg::GameMsg(MSG_TYPE _type, std::string _stream) :enMsgType(_type)
+GameMsg::GameMsg(MSG_TYPE _type, std::string _stream):enMsgType(_type)
 {
-	/*é€šè¿‡ç®€å•å·¥åŽ‚æž„é€ å…·ä½“çš„æ¶ˆæ¯å¯¹è±¡*/
+	/*Í¨¹ý¼òµ¥¹¤³§¹¹Ôì¾ßÌåµÄÏûÏ¢¶ÔÏó*/
 	switch (_type)
 	{
 	case GameMsg::MSG_TYPE_LOGIN_ID_NAME:
@@ -37,7 +33,7 @@ GameMsg::GameMsg(MSG_TYPE _type, std::string _stream) :enMsgType(_type)
 		break;
 	}
 
-	/*å°†å‚æ•°è§£æžæˆæ¶ˆæ¯å¯¹è±¡å†…å®¹*/
+	/*½«²ÎÊý½âÎö³ÉÏûÏ¢¶ÔÏóÄÚÈÝ*/
 	pMsg->ParseFromString(_stream);
 }
 
@@ -48,4 +44,20 @@ std::string GameMsg::serialize()
 	pMsg->SerializeToString(&ret);
 
 	return ret;
+}
+
+GameMsg::~GameMsg()
+{
+	if (NULL != pMsg)
+	{
+		delete pMsg;
+	}
+}
+
+MultiMsg::~MultiMsg()
+{
+	for (auto p : m_Msgs)
+	{
+		delete p;
+	}
 }

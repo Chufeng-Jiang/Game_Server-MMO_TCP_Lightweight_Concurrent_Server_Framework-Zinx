@@ -1,6 +1,5 @@
-ï»¿#pragma once
+#pragma once
 #include <zinx.h>
-#include "msg.pb.h"
 #include <google/protobuf/message.h>
 #include <list>
 
@@ -8,7 +7,7 @@ class GameMsg :
 	public UserData
 {
 public:
-	/*ç”¨æˆ·çš„è¯·æ±‚ä¿¡æ¯*/
+	/*ÓÃ»§µÄÇëÇóĞÅÏ¢*/
 	google::protobuf::Message * pMsg = NULL;
 	enum MSG_TYPE {
 		MSG_TYPE_LOGIN_ID_NAME = 1,
@@ -18,14 +17,12 @@ public:
 		MSG_TYPE_LOGOFF_ID_NAME = 201,
 		MSG_TYPE_SRD_POSTION = 202
 	} enMsgType;
-
-	/*å·²çŸ¥æ¶ˆæ¯å†…å®¹åˆ›å»ºæ¶ˆæ¯å¯¹è±¡*/
-	GameMsg(MSG_TYPE _type, google::protobuf::Message* _pMsg);
-
-	/*å°†å­—èŠ‚æµå†…å®¹è½¬æ¢æˆæ¶ˆæ¯ç»“æ„*/
+	/*ÒÑÖªÏûÏ¢ÄÚÈİ´´½¨ÏûÏ¢¶ÔÏó*/
+	GameMsg(MSG_TYPE _type, google::protobuf::Message  * _pMsg);
+	/*½«×Ö½ÚÁ÷ÄÚÈİ×ª»»³ÉÏûÏ¢½á¹¹*/
 	GameMsg(MSG_TYPE _type, std::string _stream);
 
-	/*åºåˆ—åŒ–æœ¬æ¶ˆæ¯*/
+	/*ĞòÁĞ»¯±¾ÏûÏ¢*/
 	std::string serialize();
 
 	virtual ~GameMsg();
@@ -33,7 +30,7 @@ public:
 
 class MultiMsg :public UserData {
 public:
-	std::list<GameMsg*> m_Msgs; //æ³¨æ„æ­¤å¤„è¦åŠ å‘½åç©ºé—´
+	std::list<GameMsg *> m_Msgs;
+	virtual ~MultiMsg();
 };
-
 

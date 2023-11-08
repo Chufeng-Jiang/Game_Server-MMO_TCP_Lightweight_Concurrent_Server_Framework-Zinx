@@ -1,8 +1,8 @@
-ï»¿#include "GameChannel.h"
+#include "GameChannel.h"
 #include "GameRole.h"
 
 
-GameChannel::GameChannel(int _fd) :ZinxTcpData(_fd)
+GameChannel::GameChannel(int _fd):ZinxTcpData(_fd)
 {
 }
 
@@ -16,32 +16,32 @@ GameChannel::~GameChannel()
 	}
 }
 
-AZinxHandler* GameChannel::GetInputNextStage(BytesMsg& _oInput)
+AZinxHandler * GameChannel::GetInputNextStage(BytesMsg & _oInput)
 {
 	return m_proto;
 }
 
-ZinxTcpData* GameConnFact::CreateTcpDataChannel(int _fd)
+ZinxTcpData * GameConnFact::CreateTcpDataChannel(int _fd)
 {
-	/*åˆ›å»ºtcpé€šé“å¯¹è±¡*/
+	/*´´½¨tcpÍ¨µÀ¶ÔÏó*/
 	auto pChannel = new GameChannel(_fd);
-	/*åˆ›å»ºåè®®å¯¹è±¡*/
+	/*´´½¨Ğ­Òé¶ÔÏó*/
 	auto pProtocol = new GameProtocol();
-	/*åˆ›å»ºç©å®¶å¯¹è±¡*/
+	/*´´½¨Íæ¼Ò¶ÔÏó*/
 	auto pRole = new GameRole();
 
-	/*ç»‘å®šåè®®å¯¹è±¡å’Œé€šé“å¯¹è±¡*/
+	/*°ó¶¨Ğ­Òé¶ÔÏóºÍÍ¨µÀ¶ÔÏó*/
 	pChannel->m_proto = pProtocol;
 	pProtocol->m_channel = pChannel;
 
-	/*ç»‘å®šåè®®å¯¹è±¡å’Œç©å®¶å¯¹è±¡*/
+	/*°ó¶¨Ğ­Òé¶ÔÏóºÍÍæ¼Ò¶ÔÏó*/
 	pProtocol->m_Role = pRole;
 	pRole->m_pProto = pProtocol;
 
-	/*å°†åè®®å¯¹è±¡æ·»åŠ åˆ°kernel*/
+	/*½«Ğ­Òé¶ÔÏóÌí¼Óµ½kernel*/
 	ZinxKernel::Zinx_Add_Proto(*pProtocol);
 
-	/*å°†ç©å®¶å¯¹è±¡æ·»åŠ åˆ°kernel*/
+	/*½«Íæ¼Ò¶ÔÏóÌí¼Óµ½kernel*/
 	ZinxKernel::Zinx_Add_Role(*pRole);
 
 	return pChannel;

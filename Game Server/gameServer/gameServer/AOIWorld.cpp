@@ -1,15 +1,15 @@
-ï»¿#include "AOIWorld.h"
+#include "AOIWorld.h"
 
 using namespace std;
 
 AOIWorld::AOIWorld(int _x_begin, int _x_end, int _y_begin, int _y_end, int _x_count, int _y_count):
 	x_begin(_x_begin),x_end(_x_end),y_begin(_y_begin),y_end(_y_end),x_count(_x_count),y_count(_y_count)
 {
-	//xè½´ç½‘æ ¼å®½åº¦=(xè½´ç»“æŸåæ ‡-xè½´èµ·å§‹åæ ‡)/xè½´ç½‘æ ¼æ•°é‡ï¼›yè½´çš„è®¡ç®—æ–¹å¼ç›¸åŒ
+	//xÖáÍø¸ñ¿í¶È=(xÖá½áÊø×ø±ê-xÖáÆğÊ¼×ø±ê)/xÖáÍø¸ñÊıÁ¿£»yÖáµÄ¼ÆËã·½Ê½ÏàÍ¬
 	x_width = (x_end - x_begin) / x_count;
 	y_width = (y_end - y_begin) / y_count;
 
-	/*åˆ›å»ºæ ¼å­ä»¬*/
+	/*´´½¨¸ñ×ÓÃÇ*/
 	for (int i = 0; i < x_count * y_count; i++)
 	{
 		Grid tmp;
@@ -25,60 +25,51 @@ std::list<Player*> AOIWorld::GetSrdPlayers(Player * _player)
 {
 	list<Player *> ret;
 
-	/*è®¡ç®—æ‰€å±ç¼–å·*/
+	/*¼ÆËãËùÊô±àºÅ*/
 	int grid_id = (_player->GetX() - x_begin) / x_width + (_player->GetY() - y_begin) / y_width * x_count;
-	/*åˆ¤æ–­å…·ä½“æƒ…å†µï¼Œå–å‡ºé‚»å±…ç½‘æ ¼çš„ç©å®¶ä»¬*/
+	/*ÅĞ¶Ï¾ßÌåÇé¿ö£¬È¡³öÁÚ¾ÓÍø¸ñµÄÍæ¼ÒÃÇ*/
 
-	//è®¡ç®—å½“å‰ç½‘æ ¼æ¨ªç€æ•°å’Œçºµç€æ•°çš„ä¸ªæ•°, å½“å‰ç½‘æ ¼åœ¨ä¸–ç•Œçš„åæ ‡
-	int x_index = grid_id % x_count; //æ¨ªç€çš„åæ ‡ï¼Œcol
-	int y_index = grid_id / x_count;  //çºµå‘åæ ‡ï¼Œrow
+	//¼ÆËãµ±Ç°Íø¸ñºá×ÅÊıºÍ×İ×ÅÊıµÄ¸öÊı
+	int x_index = grid_id % x_count;
+	int y_index = grid_id / x_count;
 
-	if (x_index > 0 && y_index > 0) //æœ‰å·¦ä¸Šè§’çš„æ ¼å­
+	if (x_index > 0 && y_index > 0)
 	{
 		list<Player *> &cur_list = m_grids[grid_id - 1 - x_count].m_players;
 		ret.insert(ret.begin(), cur_list.begin(),cur_list.end());
 	}
-
-	if (y_index > 0) //æ­£ä¸Šæ–¹çš„æ ¼å­
+	if (y_index > 0)
 	{
 		list<Player *> &cur_list = m_grids[grid_id - x_count].m_players;
 		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-
-	if (x_index < x_count - 1 && y_index > 0) //å³ä¸Šè§’çš„æ ¼å­
+	if (x_index < x_count - 1 && y_index > 0)
 	{
 		list<Player *> &cur_list = m_grids[grid_id - x_count + 1].m_players;
 		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-
-	if (x_index > 0) //å·¦æ–¹çš„æ ¼å­
+	if (x_index > 0)
 	{
 		list<Player *> &cur_list = m_grids[grid_id - 1].m_players;
 		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-
-	//è‡ªå·±æ‰€åœ¨ä½ç½®
 	list<Player *> &cur_list = m_grids[grid_id].m_players;
 	ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
-
-	if (x_index < x_count - 1) //å³æ–¹çš„æ ¼å­
+	if (x_index < x_count - 1)
 	{
 		list<Player *> &cur_list = m_grids[grid_id +1 ].m_players;
 		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-
-	if (x_index > 0 && y_index < y_count - 1) //å·¦ä¸‹æ–¹çš„æ ¼å­
+	if (x_index > 0 && y_index < y_count - 1)
 	{
 		list<Player *> &cur_list = m_grids[grid_id - 1 + x_count].m_players;
 		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-
-	if (y_index < y_count - 1) //å·¦ä¸‹æ–¹çš„æ ¼å­
+	if (y_index < y_count - 1)
 	{
 		list<Player *> &cur_list = m_grids[grid_id + x_count].m_players;
 		ret.insert(ret.begin(), cur_list.begin(), cur_list.end());
 	}
-
 	if (x_index < x_count - 1 && y_index < y_count - 1)
 	{
 		list<Player *> &cur_list = m_grids[grid_id + 1+x_count].m_players;
@@ -90,12 +81,12 @@ std::list<Player*> AOIWorld::GetSrdPlayers(Player * _player)
 
 bool AOIWorld::AddPlayer(Player * _player)
 {
-	/*è®¡ç®—æ‰€å±ç½‘æ ¼å·*/
+	/*¼ÆËãËùÊôÍø¸ñºÅ*/
 	 
-	//ç½‘æ ¼ç¼–å·=(x-xè½´èµ·å§‹åæ ‡)/xè½´ç½‘æ ¼å®½åº¦ + (y-yè½´èµ·å§‹åæ ‡)/yè½´å®½åº¦*xè½´ç½‘æ ¼æ•°é‡
+	//Íø¸ñ±àºÅ=(x-xÖáÆğÊ¼×ø±ê)/xÖáÍø¸ñ¿í¶È + (y-yÖáÆğÊ¼×ø±ê)/yÖá¿í¶È*xÖáÍø¸ñÊıÁ¿
 	int grid_id = (_player->GetX() - x_begin) / x_width + (_player->GetY()-y_begin) / y_width * x_count;
 
-	/*æ·»åŠ åˆ°è¯¥ç½‘æ ¼ä¸­*/
+	/*Ìí¼Óµ½¸ÃÍø¸ñÖĞ*/
 	m_grids[grid_id].m_players.push_back(_player);
 	return true;
 }

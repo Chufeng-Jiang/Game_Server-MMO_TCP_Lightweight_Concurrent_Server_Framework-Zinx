@@ -1,8 +1,8 @@
-ï»¿#pragma once
+#pragma once
 #include <list>
 #include <vector>
 
-/*æ‹¥æœ‰æ¨ªçºµåæ ‡çš„å¯¹è±¡*/
+/*ÓµÓĞºá×İ×ø±êµÄ¶ÔÏó*/
 class Player {
 public:
 	virtual int GetX() = 0;
@@ -11,10 +11,10 @@ public:
 
 class Grid {
 public:
-	std::list<Player*> m_players;
+	std::list<Player *> m_players;
 };
 
-/*æ¸¸æˆä¸–ç•ŒçŸ©å½¢*/
+/*ÓÎÏ·ÊÀ½ç¾ØĞÎ*/
 class AOIWorld
 {
 	int x_begin = 0;
@@ -27,17 +27,17 @@ class AOIWorld
 	int y_width = 0;
 public:
 	std::vector<Grid> m_grids;
-	/*é€šè¿‡æ„é€ å‡½æ•°æŒ‡å®šçŸ©å½¢çš„å¤§å°å’Œåˆ†å‰²ç²’åº¦*/
+	/*Í¨¹ı¹¹Ôìº¯ÊıÖ¸¶¨¾ØĞÎµÄ´óĞ¡ºÍ·Ö¸îÁ£¶È*/
 	AOIWorld(int _x_begin, int _x_end, int _y_begin, int  _y_end, int _x_count, int _y_count);
 	virtual ~AOIWorld();
 
-	/*è·å–å‘¨å›´ç©å®¶*/
-	std::list<Player*> GetSrdPlayers(Player* _player);
+	/*»ñÈ¡ÖÜÎ§Íæ¼Ò*/
+	std::list<Player *> GetSrdPlayers(Player *_player);
 
-	/*æ·»åŠ ç©å®¶åˆ°AOIç½‘æ ¼*/
-	bool AddPlayer(Player* _player);
+	/*Ìí¼ÓÍæ¼Òµ½AOIÍø¸ñ*/
+	bool AddPlayer(Player *_player);
 
-	/*æ‘˜é™¤ç©å®¶*/
-	void DelPlayer(Player* _player);
+	/*Õª³ıÍæ¼Ò*/
+	void DelPlayer(Player *_player);
 };
 

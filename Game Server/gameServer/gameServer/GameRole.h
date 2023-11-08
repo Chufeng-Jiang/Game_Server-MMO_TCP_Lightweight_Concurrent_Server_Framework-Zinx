@@ -1,33 +1,41 @@
-ï»¿#pragma once
+#pragma once
 #include <zinx.h>
 #include "AOIWorld.h"
 #include "GameMsg.h"
 
 class GameProtocol;
 class GameRole :
-	public Irole, public Player
+	public Irole,public Player
 {
 	float x = 0;
-	float y = 0;//é«˜
+	float y = 0;//¸ß
 	float z = 0;
 	float v = 0;
 	int iPid = 0;
 	std::string szName;
-	GameMsg* CreateIDNameLogin();
-	GameMsg* CreataSrdPlayers();
-	GameMsg* CreateSelfPostion();
-	GameMsg* CreateIDNameLogoff();
+
+	void ProcTalkMsg(std::string _content);
+	void ProcMoveMsg(float _x, float _y, float _z, float _v);
+
+	void ViewAppear(GameRole *_pRole);
+	void ViewLost(GameRole *_pRole);
+
+	GameMsg *CreateIDNameLogin();
+	GameMsg *CreataSrdPlayers();
+	GameMsg *CreateSelfPostion();
+	GameMsg *CreateIDNameLogoff();
+	GameMsg *CreateTalkBroadCast(std::string _content);
 public:
 	GameRole();
 	virtual ~GameRole();
 
-	// é€šè¿‡ Irole ç»§æ‰¿
+	// Í¨¹ý Irole ¼Ì³Ð
 	virtual bool Init() override;
-	virtual UserData* ProcMsg(UserData& _poUserData) override;
+	virtual UserData * ProcMsg(UserData & _poUserData) override;
 	virtual void Fini() override;
-	GameProtocol* m_pProto = NULL;
+	GameProtocol *m_pProto = NULL;
 
-	// é€šè¿‡ Player ç»§æ‰¿
+	// Í¨¹ý Player ¼Ì³Ð
 	virtual int GetX() override;
 	virtual int GetY() override;
 };

@@ -1,14 +1,17 @@
-ï»¿#include "GameProtocol.h"
+#include "GameProtocol.h"
 #include <iostream>
 #include "GameMsg.h"
 #include "GameChannel.h"
 #include "msg.pb.h"
 #include "GameRole.h"
+
 using namespace std;
+
 
 GameProtocol::GameProtocol()
 {
 }
+
 
 GameProtocol::~GameProtocol()
 {
@@ -19,13 +22,12 @@ GameProtocol::~GameProtocol()
 	}
 }
 
-/*è¾“å…¥å‚æ•°æ˜¯é€šé“ä¼ æ¥çš„åŸå§‹æŠ¥æ–‡
-è¿”å›å€¼æ˜¯è½¬æ¢åçš„æ¶ˆæ¯å¯¹è±¡MultiMsgï¼Œ
-æŠ¥æ–‡é‡Œé¢æœ‰å¤šæ¡è¯·æ±‚ï¼Œä½†æ˜¯è¿”å›åªèƒ½è¿”å›ä¸€æ¡ï¼Œ
-è½¬æ¢æ–¹å¼,TCPç²˜åŒ…å¤„ç†*/
-UserData* GameProtocol::raw2request(std::string _szInput)
+/*ÊäÈë²ÎÊıÊÇÍ¨µÀ´«À´µÄÔ­Ê¼±¨ÎÄ
+·µ»ØÖµÊÇ×ª»»ºóµÄÏûÏ¢¶ÔÏóMultiMsg
+×ª»»·½Ê½,TCPÕ³°ü´¦Àí*/
+UserData * GameProtocol::raw2request(std::string _szInput)
 {
-	MultiMsg* pRet = new MultiMsg(); //æ­¤æ—¶æ²¡æœ‰ç”¨æˆ·è¯·æ±‚
+	MultiMsg *pRet = new MultiMsg();
 	szLast.append(_szInput);
 
 	while (1)
@@ -35,55 +37,40 @@ UserData* GameProtocol::raw2request(std::string _szInput)
 			break;
 		}
 
-		/*åœ¨å‰å››ä¸ªå­—èŠ‚ä¸­è¯»å–æ¶ˆæ¯å†…å®¹é•¿åº¦*/
+		/*ÔÚÇ°ËÄ¸ö×Ö½ÚÖĞ¶ÁÈ¡ÏûÏ¢ÄÚÈİ³¤¶È*/
 		int iLength = 0;
 		iLength |= szLast[0] << 0;
 		iLength |= szLast[1] << 8;
 		iLength |= szLast[2] << 16;
 		iLength |= szLast[3] << 24;
-		/*ä¸­å››ä¸ªå­—èŠ‚è¯»ç±»å‹id*/
+		/*ÖĞËÄ¸ö×Ö½Ú¶ÁÀàĞÍid*/
 		int id = 0;
 		id |= szLast[4] << 0;
 		id |= szLast[5] << 8;
 		id |= szLast[6] << 16;
 		id |= szLast[7] << 24;
 
-		/*é€šè¿‡è¯»åˆ°çš„é•¿åº¦åˆ¤æ–­åç»­æŠ¥æ–‡æ˜¯å¦åˆæ³•*/
+		/*Í¨¹ı¶Áµ½µÄ³¤¶ÈÅĞ¶ÏºóĞø±¨ÎÄÊÇ·ñºÏ·¨*/
 		if (szLast.size() - 8 < iLength)
 		{
-			/*æœ¬æ¡æŠ¥æ–‡è¿˜æ²¡å¤Ÿï¼Œå•¥éƒ½ä¸å¹²*/
+			/*±¾Ìõ±¨ÎÄ»¹Ã»¹»£¬É¶¶¼²»¸É*/
 			break;
 		}
 
-		/*æ„é€ ä¸€æ¡ç”¨æˆ·è¯·æ±‚*/
-		GameMsg* pMsg = new GameMsg((GameMsg::MSG_TYPE)id, szLast.substr(8, iLength)); // iLengthæ˜¯æ­£æ–‡çš„é•¿åº¦
+		/*¹¹ÔìÒ»ÌõÓÃ»§ÇëÇó*/
+		GameMsg *pMsg = new GameMsg((GameMsg::MSG_TYPE)id, szLast.substr(8, iLength));
 		pRet->m_Msgs.push_back(pMsg);
-
-		/*å¼¹å‡ºå·²ç»å¤„ç†æˆåŠŸçš„æŠ¥æ–‡*/
+		/*µ¯³öÒÑ¾­´¦Àí³É¹¦µÄ±¨ÎÄ*/
 		szLast.erase(0, 8 + iLength);
 	}
-
-	//Debugæ‰“å°æ¯æ¡è¯·æ±‚
-	/*
-	for (auto single : pRet->m_Msgs)
-	{
-		cout << single->pMsg->Utf8DebugString() << endl;
-	}
-
-
-	pb::Talk* pmsg = new pb::Talk();
-	pmsg->set_content("hello");
-	GameMsg* pGameMsg = new GameMsg(GameMsg::MSG_TYPE_CHAT_CONTENT, pmsg);
-
-	ZinxKernel::Zinx_SendOut(*(pGameMsg), *this);
-	*/
 
 	return pRet;
 }
 
-/*å‚æ•°æ¥è‡ªä¸šåŠ¡å±‚ï¼Œå¾…å‘é€çš„æ¶ˆæ¯
-è¿”å›å€¼è½¬æ¢åçš„å­—èŠ‚æµ*/
-std::string* GameProtocol::response2raw(UserData& _oUserData)
+
+/*²ÎÊıÀ´×ÔÒµÎñ²ã£¬´ı·¢ËÍµÄÏûÏ¢
+·µ»ØÖµ×ª»»ºóµÄ×Ö½ÚÁ÷*/
+std::string * GameProtocol::response2raw(UserData & _oUserData)
 {
 	int iLength = 0;
 	int id = 0;
@@ -109,13 +96,13 @@ std::string* GameProtocol::response2raw(UserData& _oUserData)
 	return pret;
 }
 
-Irole* GameProtocol::GetMsgProcessor(UserDataMsg& _oUserDataMsg)
+Irole * GameProtocol::GetMsgProcessor(UserDataMsg & _oUserDataMsg)
 {
 	return m_Role;
 }
 
-/*è¿”å›æ•°æ®å‘é€çš„é€šé“*/
-Ichannel* GameProtocol::GetMsgSender(BytesMsg& _oBytes)
+/*·µ»ØÊı¾İ·¢ËÍµÄÍ¨µÀ*/
+Ichannel * GameProtocol::GetMsgSender(BytesMsg & _oBytes)
 {
 	return m_channel;
 }
