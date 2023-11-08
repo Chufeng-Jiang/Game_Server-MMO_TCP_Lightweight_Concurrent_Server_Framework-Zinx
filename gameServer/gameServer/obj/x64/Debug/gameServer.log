@@ -1,0 +1,161 @@
+﻿  正在验证源
+  正在将源远程复制到“192.168.111.135”
+  正在验证体系结构
+  正在验证体系结构
+  正在启动远程生成
+  正在编译源:
+  AOIWorld.cpp
+  GameChannel.cpp
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :      if ('A' <= *i && *i <= 'Z') *i += 'a' - 'A';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :      if ('a' <= *i && *i <= 'z') *i += 'A' - 'a';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :      return strtol(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :                                      ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :      return strtoul(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :                                       ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(492,38): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(496,39): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+  GameMsg.cpp
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :      if ('A' <= *i && *i <= 'Z') *i += 'a' - 'A';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :      if ('a' <= *i && *i <= 'z') *i += 'A' - 'a';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :      return strtol(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :                                      ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :      return strtoul(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :                                       ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(492,38): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(496,39): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameMsg.h(19,4): warning : ‘GameMsg::enMsgType’ will be initialized after [-Wreorder]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameMsg.h(19,4): warning :   } enMsgType;
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameMsg.h(19,4): warning :     ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameMsg.h(11,37): warning : ‘google::protobuf::Message* GameMsg::pMsg’ [-Wreorder]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameMsg.cpp(5,1): warning : when initialized here [-Wreorder]
+  GameProtocol.cpp
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :      if ('A' <= *i && *i <= 'Z') *i += 'a' - 'A';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :      if ('a' <= *i && *i <= 'z') *i += 'A' - 'a';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :      return strtol(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :                                      ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :      return strtoul(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :                                       ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(492,38): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(496,39): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(54,27): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(54,27): warning :    if (szLast.size() - 8 < iLength)
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(54,27): warning :                            ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(82,28): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(82,28): warning :   iLength = MsgContent.size();
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(82,28): warning :                             ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(86,33): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(86,33): warning :   pret->push_back((iLength >> 0) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(86,33): warning :                                  ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(87,33): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(87,33): warning :   pret->push_back((iLength >> 8) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(87,33): warning :                                  ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(88,34): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(88,34): warning :   pret->push_back((iLength >> 16) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(88,34): warning :                                   ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(89,34): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(89,34): warning :   pret->push_back((iLength >> 24) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(89,34): warning :                                   ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(90,28): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(90,28): warning :   pret->push_back((id >> 0) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(90,28): warning :                             ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(91,28): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(91,28): warning :   pret->push_back((id >> 8) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(91,28): warning :                             ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(92,29): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(92,29): warning :   pret->push_back((id >> 16) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(92,29): warning :                              ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(93,29): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(93,29): warning :   pret->push_back((id >> 24) & 0xff);
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameProtocol.cpp(93,29): warning :                              ^
+  GameRole.cpp
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :      if ('A' <= *i && *i <= 'Z') *i += 'a' - 'A';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :      if ('a' <= *i && *i <= 'z') *i += 'A' - 'a';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :      return strtol(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :                                      ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :      return strtoul(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :                                       ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(492,38): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(496,39): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameRole.cpp(184,10): warning : conversion to ‘float’ from ‘std::linear_congruential_engine<long unsigned int, 16807ul, 0ul, 2147483647ul>::result_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameRole.cpp(184,10): warning :   x = 100 + random_engine() % 50;
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameRole.cpp(184,10): warning :           ^
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameRole.cpp(185,10): warning : conversion to ‘float’ from ‘std::linear_congruential_engine<long unsigned int, 16807ul, 0ul, 2147483647ul>::result_type {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameRole.cpp(185,10): warning :   z = 100 + random_engine() % 50;
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\GameRole.cpp(185,10): warning :           ^
+  main.cpp
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :      if ('A' <= *i && *i <= 'Z') *i += 'a' - 'A';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :      if ('a' <= *i && *i <= 'z') *i += 'A' - 'a';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :      return strtol(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :                                      ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :      return strtoul(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :                                       ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(492,38): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(496,39): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+  msg.pb.cc
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(92,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(96,31): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :      if ('A' <= *i && *i <= 'Z') *i += 'a' - 'A';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(181,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning : conversion to ‘char’ from ‘int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :      if ('a' <= *i && *i <= 'z') *i += 'A' - 'a';
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(189,36): warning :                                     ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :      return strtol(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(365,37): warning :                                      ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :      return strtoul(nptr, endptr, base);
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(372,38): warning :                                       ^
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(492,38): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘long int’ may alter its value [-Wconversion]
+/usr/local/protobuf/include/google/protobuf/stubs/strutil.h(496,39): warning : conversion to ‘google::protobuf::uint32 {aka unsigned int}’ from ‘long unsigned int’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\msg.pb.cc(297,70): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘google::protobuf::uint64 {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\msg.pb.cc(547,70): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘google::protobuf::uint64 {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\msg.pb.cc(1031,77): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘google::protobuf::uint64 {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\msg.pb.cc(1307,77): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘google::protobuf::uint64 {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\msg.pb.cc(1603,70): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘google::protobuf::uint64 {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\msg.pb.cc(1610,69): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘google::protobuf::uint64 {aka long unsigned int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\msg.pb.cc(1633,88): warning : conversion to ‘google::protobuf::int32 {aka int}’ from ‘google::protobuf::uint64 {aka long unsigned int}’ may alter its value [-Wconversion]
+  RandomName.cpp
+  ZinxTimer.cpp
+  正在链接对象
+  gameServer.vcxproj -> F:\Git Repo\Zinx Framework Game Server\Game Server\gameServer\gameServer\bin\x64\Debug\gameServer.out
