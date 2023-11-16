@@ -1,0 +1,17 @@
+﻿  正在验证源
+  正在将源远程复制到“192.168.111.136”
+  正在验证体系结构
+  正在验证体系结构
+  正在启动远程生成
+  正在编译源:
+  FIFO_channel.cpp
+F:\Git Repo\Zinx Framework Game Server\Game Server\Create_Zinx_Framework\Create_Zinx_Framework\FIFO_channel.cpp(19,46): warning : conversion to ‘int’ from ‘ssize_t {aka long int}’ may alter its value [-Wconversion]
+F:\Git Repo\Zinx Framework Game Server\Game Server\Create_Zinx_Framework\Create_Zinx_Framework\FIFO_channel.cpp(19,46): warning :   int ilen = read(m_fd, szbuff, sizeof(szbuff));
+F:\Git Repo\Zinx Framework Game Server\Game Server\Create_Zinx_Framework\Create_Zinx_Framework\FIFO_channel.cpp(19,46): warning :                                               ^
+  Ichannel.cpp
+  main.cpp
+  stdin_channel.cpp
+  stdou_channel.cpp
+  zinxkernel.cpp
+  正在链接对象
+  Create_Zinx_Framework.vcxproj -> F:\Git Repo\Zinx Framework Game Server\Game Server\Create_Zinx_Framework\Create_Zinx_Framework\bin\x64\Debug\Create_Zinx_Framework.out
